@@ -22,8 +22,8 @@ namespace App05MonoGame.Controllers
     /// collisions with the player sprite
     /// </summary>
     /// <authors>
-    /// Derek Peacock & Andrei Cruceru
-    /// Modified by Jason Huggins (13/05/2021)
+    /// Derek Peacock
+    /// Modified by Takudzwa Gotora 20/05/2022
     /// </authors>
     public class CoinsController
     {
