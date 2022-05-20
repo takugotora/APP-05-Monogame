@@ -18,7 +18,8 @@ namespace App05MonoGame.Sprites
     /// It updates and draws the current animation.
     /// </summary>
     /// <authors>
-    /// Derek Peacock & Andrei Cruceru
+    /// Derek Peacock 
+    /// Takudzwa Gotora
     /// </authors>
     public class PlayerSprite : Sprite
     {
