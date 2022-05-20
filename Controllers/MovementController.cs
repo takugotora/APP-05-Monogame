@@ -9,8 +9,8 @@ namespace App05MonoGame.Controllers
     /// the arrow keys, setting appropriate input keys.
     /// </summary>
     /// <author>
-    /// Derek Peacock & Andrei Cruceru
-    /// Modified by Jason Huggins (29/04/2021)
+    /// Derek Peacock 
+    /// Modified by Takudzwa Gotora 20/05/2022
     /// </author>
     public class MovementController
     {
