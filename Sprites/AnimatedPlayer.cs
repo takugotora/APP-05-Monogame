@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using App05MonoGame.Controllers;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace App05MonoGame.Sprites
+namespace App05MonoGame.Models
 {
     /// <summary>
     /// This class is an AnimatedSprite whose direction
@@ -10,11 +11,20 @@ namespace App05MonoGame.Sprites
     /// directions, up, down, left and right
     /// </summary>
     /// <authors>
-    /// Derek Peacock & Andrei Cruceru
+    /// Derek Peacock 
+    /// Modified by Takudzwa Gotora (20/05/2022)
     /// </authors>
     public class AnimatedPlayer : AnimatedSprite
     {
+        public const int MAX_HEALTH = 100;
+
         public bool CanWalk { get; set; }
+
+        public int Score { get; set; }
+
+        public int Health { get; set; }
+
+        public BulletController BulletController { get; set; }
 
         private readonly MovementController movement;
 
@@ -22,6 +32,8 @@ namespace App05MonoGame.Sprites
         {
             CanWalk = false;
             movement = new MovementController();
+            Health = MAX_HEALTH;
+            Score = 0;
         }
 
         /// <summary>
@@ -31,11 +43,12 @@ namespace App05MonoGame.Sprites
         /// </summary>
         public override void Update(GameTime gameTime)
         {
-            KeyboardState keyState = Keyboard.GetState();
-
+            PreviousKey = CurrentKey;
+            CurrentKey = Keyboard.GetState();
+            
             IsActive = false;
 
-            Vector2 newDirection = movement.ChangeDirection(keyState);
+            Vector2 newDirection = movement.ChangeDirection(CurrentKey);
 
             if (newDirection != Vector2.Zero)
             {
@@ -44,6 +57,12 @@ namespace App05MonoGame.Sprites
             }
 
             if (CanWalk) Walk();
+
+            if (CurrentKey.IsKeyDown(Keys.Space) && 
+                PreviousKey.IsKeyUp(Keys.Space) && (BulletController != null))
+            {
+                BulletController.AddBullet(this);
+            }
 
             base.Update(gameTime);
         }
