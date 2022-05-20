@@ -1,9 +1,10 @@
-﻿using App05MonoGame.Helpers;
+using App05MonoGame.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace App05MonoGame.Sprites
+namespace App05MonoGame.Models
 {
     /// <summary>
     /// This is a basic sprite which has a single image which
@@ -15,8 +16,10 @@ namespace App05MonoGame.Sprites
     /// Speed of 60 is one pixel per second.  The Sprite can only
     /// move if it is Active and Alive.
     /// </summary>
-    public class Sprite: 
-        ICloneable, IDrawableInterface, IUpdateableInterface
+    /// <author>
+    /// Modified by Takudzwa Gotora (20/05/2022)
+    /// </author>
+    public class Sprite: ICloneable
     {
         #region Properties
 
@@ -49,12 +52,12 @@ namespace App05MonoGame.Sprites
 
         public bool IsActive { get; set; }
 
-        public virtual int Width
+        public int Width
         {
             get { return Image.Width; }
         }
 
-        public virtual int Height
+        public int Height
         {
             get { return Image.Height; }
         }
@@ -72,11 +75,18 @@ namespace App05MonoGame.Sprites
                 );
             }
         }
+        
+        public KeyboardState CurrentKey { get; set; }
 
-        public SpriteAttribute Score { get; }
-        public SpriteAttribute Energy { get; }
+        public KeyboardState PreviousKey { get; set; }
 
-        // Variables
+        public float RotationVelocity { get; set; }
+
+        public float LinearVelocity { get; set; }
+
+        public Sprite Parent { get; set; }
+
+        public float LifeSpan { get; set; }
 
         #endregion
 
@@ -108,10 +118,7 @@ namespace App05MonoGame.Sprites
 
             Scale = 1;
             Rotation = 0;
-            RotationSpeed = 0;
-
-            Score = new SpriteAttribute(0, 100, 0);
-            Energy = new SpriteAttribute(0, 100, 100);
+            RotationSpeed = 0;            
         }
 
         /// <summary>
@@ -124,12 +131,12 @@ namespace App05MonoGame.Sprites
             Position = new Vector2(x, y);
         }
 
-        public bool HasCollided(Sprite otherSprite)
+        public bool HasCollided(Sprite other)
         {
-            if(BoundingBox.Intersects(otherSprite.BoundingBox))
+            if(BoundingBox.Intersects(other.BoundingBox))
             {
                 int margin = 8 * (int)Scale;
-                Rectangle overlap = Rectangle.Intersect(BoundingBox, otherSprite.BoundingBox);
+                Rectangle overlap = Rectangle.Intersect(BoundingBox, other.BoundingBox);
                 if(overlap.Width > margin)
                     return true;
             }
@@ -160,7 +167,7 @@ namespace App05MonoGame.Sprites
             }
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (debug)
             {
@@ -186,6 +193,5 @@ namespace App05MonoGame.Sprites
         {
             return this.MemberwiseClone();
         }
-
     }
 }
